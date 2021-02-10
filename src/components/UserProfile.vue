@@ -14,8 +14,9 @@
         action=""
         class="user-profile__create-twoot"
         @submit.prevent="createNewTwoot"
+        :class="{'--exceeded': newTwootCharacterCount > 180}"
       >
-        <label for="newTwoot"><strong>New Twoot</strong></label>
+        <label for="newTwoot"><strong>New Twoot</strong> ({{newTwootCharacterCount}}/180)</label>
         <textarea id="newTwoot" rows="4" v-model="newTwootContent"></textarea>
         <div class="user-profile__create-twoot-type">
           <label for="newTwootType"><strong>Type:</strong></label>
@@ -84,9 +85,12 @@ export default {
     },
   },
   computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`;
-    },
+    // fullName() {
+    //   return `${this.user.firstName} ${this.user.lastName}`;
+    // },
+    newTwootCharacterCount() {
+      return this.newTwootContent.length;
+    }
   },
   methods: {
     followUser() {
@@ -147,6 +151,17 @@ export default {
     flex-direction: column;
     padding-top: 20px;
     border-top: 1px solid #dfe3e8;
+
+    &.--exceeded {
+      color: red;
+      border-color: red;
+
+      button {
+        background-color: red;
+        border: none;
+        color: white;
+      }
+    }
   }
 }
 
