@@ -23,6 +23,14 @@ export default {
       }
     }
   },
+  // watches a data point & when it changes, it runs a function
+  watch: {
+    followers(newFollowerCount, oldFollowerCount) {
+      if (oldFollowerCount < newFollowerCount) {
+        console.log(`${this.user.username} has gained a follower`)
+      }
+    }
+  },
   computed: {
     fullName() {
       return `${this.user.firstName} ${this.user.lastName}`
@@ -33,6 +41,10 @@ export default {
       this.followers++
     }
   },
+  // when you mount this component, run this function
+  mounted() {
+    this.followUser()
+  }
 }
 </script>
 
