@@ -6,7 +6,7 @@
         Admin
       </div>
       <div class="user-profile__follower-count">
-        <strong>Followers:</strong>{{ followers }}
+        <strong>Followers:</strong>{{ state.followers }}
       </div>
     </div>
     <div class="user-profile__twoots-wrapper">
@@ -25,7 +25,7 @@
 <script>
 import TwootItem from "./TwootItem";
 import CreateTwootPanel from "./CreateTwootPanel";
-import { reactive} from "vue";
+import { reactive, ref, watch } from "vue";
 
 export default {
   name: "App",
@@ -64,6 +64,13 @@ export default {
         content: twoot,
       });
     }
+
+    const follower = ref(0)
+    watch(follower,(newFollowerCount, oldFollowerCount) => {
+      if (oldFollowerCount < newFollowerCount) {
+  //       console.log(`${this.user.username} has gained a follower`);
+      }
+    })
 
     return {
       state,
