@@ -2,6 +2,7 @@
   <div class="user-profile">
     <div class="user-profile__user-panel">
       <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+      <h2>{{ userId }}</h2>
       <div class="user-profile__admin-badge" v-if="state.user.isAdmin">
         Admin
       </div>
@@ -23,9 +24,12 @@
 </template>
 
 <script>
-import TwootItem from "./TwootItem";
-import CreateTwootPanel from "./CreateTwootPanel";
-import { reactive, ref, watch } from "vue";
+import TwootItem from "../components/TwootItem";
+import CreateTwootPanel from "../components/CreateTwootPanel";
+import { reactive, ref, watch, computed } from "vue";
+import { useRoute } from 'vue-router';
+import { users } from '../assets/users';
+
 
 export default {
   name: "App",
@@ -34,20 +38,24 @@ export default {
     CreateTwootPanel,
   },
   setup() {
+    const route = useRoute();
+    const userId = computed(() => route.params.userId)
+
     const state = reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: "_Sandra",
-        firstName: "Sandra",
-        lastName: "Bee",
-        email: "sandra.bayabos@gmail.com",
-        isAdmin: true,
-        twoots: [
-          { id: 1, content: "Twotter is amazing!" },
-          { id: 2, content: `Don't forget to subscribe to sandra` },
-        ],
-      },
+      user: users[userId.value -1 ] || users[0]
+      // user: {
+      //   id: 1,
+      //   username: "_Sandra",
+      //   firstName: "Sandra",
+      //   lastName: "Bee",
+      //   email: "sandra.bayabos@gmail.com",
+      //   isAdmin: true,
+      //   twoots: [
+      //     { id: 1, content: "Twotter is amazing!" },
+      //     { id: 2, content: `Don't forget to subscribe to sandra` },
+      //   ],
+      // },
     })
 
     function followUser() {
@@ -76,7 +84,8 @@ export default {
       state,
       followUser,
       toggleFavourite,
-      addTwoot
+      addTwoot,
+      userId
     }
   },
   // data() {

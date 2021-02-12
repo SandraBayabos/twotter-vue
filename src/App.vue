@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <UserProfile/>
+    <nav>
+      <router-link to="/">
+        <h1>HOMEPAGE LINK</h1>
+      </router-link>
+    </nav>
+    <!-- <UserProfile/> -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import UserProfile from './components/UserProfile';
+// import UserProfile from './views/UserProfile';
 
 export default {
-  name: 'App',
-  components: { UserProfile }
-}
+  name: "App",
+  // components: { UserProfile }
+};
 </script>
 
 <style lang="scss">
@@ -20,6 +26,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-height: 100vh;
-  background-color: #F3F5FA;
-  }
+  background-color: #f3f5fa;
+}
 </style>
