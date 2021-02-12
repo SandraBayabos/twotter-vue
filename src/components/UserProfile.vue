@@ -1,8 +1,8 @@
 <template>
   <div class="user-profile">
     <div class="user-profile__user-panel">
-      <h1 class="user-profile__username">@{{ user.username }}</h1>
-      <div class="user-profile__admin-badge" v-if="user.isAdmin">
+      <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+      <div class="user-profile__admin-badge" v-if="state.user.isAdmin">
         Admin
       </div>
       <div class="user-profile__follower-count">
@@ -12,9 +12,9 @@
     <div class="user-profile__twoots-wrapper">
       <CreateTwootPanel @add-twoot="addTwoot" />
       <TwootItem
-        v-for="(twoot, index) in user.twoots"
+        v-for="(twoot, index) in state.user.twoots"
         :key="index"
-        :username="user.username"
+        :username="state.user.username"
         :twoot="twoot"
         @favourite="toggleFavourite"
       />
@@ -25,6 +25,7 @@
 <script>
 import TwootItem from "./TwootItem";
 import CreateTwootPanel from "./CreateTwootPanel";
+import { reactive} from "vue";
 
 export default {
   name: "App",
@@ -32,8 +33,8 @@ export default {
     TwootItem,
     CreateTwootPanel,
   },
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       followers: 0,
       user: {
         id: 1,
@@ -47,30 +48,69 @@ export default {
           { id: 2, content: `Don't forget to subscribe to sandra` },
         ],
       },
-    };
-  },
-  // watches a data point & when it changes, it runs a function
-  watch: {
-    followers(newFollowerCount, oldFollowerCount) {
-      if (oldFollowerCount < newFollowerCount) {
-        console.log(`${this.user.username} has gained a follower`);
-      }
-    },
-  },
-  methods: {
-    followUser() {
-      this.followers++;
-    },
-    toggleFavourite(id) {
+    })
+
+    function followUser() {
+      state.followers++;
+    }
+
+    function toggleFavourite(id) {
       console.log(`Favourited Tweet ${id}`);
-    },
-    addTwoot(twoot) {
-      this.user.twoots.unshift({
-        id: this.user.twoots.length + 1,
+    }
+
+    function addTwoot(twoot) {
+      state.user.twoots.unshift({
+        id: state.user.twoots.length + 1,
         content: twoot,
       });
-    },
+    }
+
+    return {
+      state,
+      followUser,
+      toggleFavourite,
+      addTwoot
+    }
   },
+  // data() {
+  //   return {
+  //     followers: 0,
+  //     user: {
+  //       id: 1,
+  //       username: "_Sandra",
+  //       firstName: "Sandra",
+  //       lastName: "Bee",
+  //       email: "sandra.bayabos@gmail.com",
+  //       isAdmin: true,
+  //       twoots: [
+  //         { id: 1, content: "Twotter is amazing!" },
+  //         { id: 2, content: `Don't forget to subscribe to sandra` },
+  //       ],
+  //     },
+  //   };
+  // },
+  // watches a data point & when it changes, it runs a function
+  // watch: {
+  //   followers(newFollowerCount, oldFollowerCount) {
+  //     if (oldFollowerCount < newFollowerCount) {
+  //       console.log(`${this.user.username} has gained a follower`);
+  //     }
+  //   },
+  // },
+  // methods: {
+    // followUser() {
+    //   this.followers++;
+    // },
+    // toggleFavourite(id) {
+    //   console.log(`Favourited Tweet ${id}`);
+    // },
+    // addTwoot(twoot) {
+    //   this.user.twoots.unshift({
+    //     id: this.user.twoots.length + 1,
+    //     content: twoot,
+    //   });
+    // },
+  // },
   // when you mount this component, run this function
   mounted() {
     this.followUser();
