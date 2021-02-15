@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <router-link to="/">
-        <h1>HOMEPAGE LINK</h1>
+        <h1>HOMEPAGE LINK</h1> 
       </router-link>
     </nav>
     <!-- <UserProfile/> -->
@@ -11,11 +11,20 @@
 </template>
 
 <script>
+import { computed } from "vue";
 // import UserProfile from './views/UserProfile';
+import { useStore } from "vuex";
 
 export default {
   name: "App",
-  // components: { UserProfile }
+  setup() {
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
+
+    return {
+      user,
+    };
+  },
 };
 </script>
 
